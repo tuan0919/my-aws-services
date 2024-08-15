@@ -146,3 +146,15 @@ Có thể sử dụng user data để thực thi một số hành động
 Mỗi EC2 có một bộ thông tin được nạp lên sau khi khởi động gọi là **meta data**.
 Thông tin bao gồm địa chỉ IP public/private, security group, AMI-ID, Role,... phục vụ truy xuất khi cần thiết.
 Metada được lưu tại địa chỉ: http://169.254.169.254/latest/meta-data (cố định cho cả Windows và Linux)
+
+### Use case của EC2
+
+EC2 là dịch vụ rất mạnh mẽ của AWS, xuất hiện trong hầu hết các hệ thống. Ngoài ra EC2 còn là nền tảng cơ bản của các dịch vụ như ECS và EKS (k8s).
+
+**User case cơ bản**:
+
+- Lift and shift: Migrate 1:1 các ứng dụng đang chạy trên On-premise của công ty, không có nhu cầu tái cấu trúc.
+- Chạy các website cơ bản all in one.
+- Compute cluster: dùng cho các ứng dụng chạy xử lý data như Hadoop, Spark,...
+- Dùng làm database trong trường hợp không muốn xài dịch vụ database sẵn của AWS.
+- Dùng làm node của cluster K8S.
