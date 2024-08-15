@@ -85,3 +85,50 @@ Hầu hết các service của AWS đều hỗ trợ triển khai trên Mutli-AZ
 AWS Edge Location là một mạng lưới các điểm phân phối (Point of Present) trên thế giới, nơi các dịch vụ AWS, như Amazon CloudFront và Amazon Route 53, cung cấp các tính năng xử lý và phân phối nội dung (CDN) đến người dùng cuối.
 
 Mỗi Edge Location là một trung tâm dữ liệu nhỏ và được quản lý bởi AWS, có khả năng đáp ứng các yêu cầu địa phương từ các máy khách của người dùng cuối. Edge Locations hoạt động như bộ đệm cho nội dung được phân phối bởi các dịch vụ AWS, giúp giảm thiểu độ trễ và tăng tốc độ truy cập cho người dùng cuối.
+
+## 3. Computing Service - EC2
+
+### Định nghĩa
+
+EC2 là viết tắt của Amazon Elastic Computer Cloud là một service cung cấp tài nguyên server ảo theo yêu cầu.
+
+Khi đối chiếu một số khái niệm giữa EC2 với PC/Laptop truyền thống thì chúng ta có thể dùng bảng dưới đây:
+
+| EC2         | PC/Laptop     |
+| ----------- | ------------- |
+| RAM         | RAM           |
+| CPU         | CPU           |
+| GPU         | GPU           |
+| EBS Volumes | SSD, HDD, USB |
+| VPC/Subnet  | LAN           |
+| Snapshot    | Ghost         |
+
+### EC2 thuộc về layer nào
+
+- EC2 là máy chủ ảo chạy trên Hypervisor (Trình ảo hóa) của AWS, bên dưới là các phần cứng
+- Về cơ bản người dùng chỉ có thể quản lí EC2 từ cấp độ OS trở lên.
+- AWS sẽ không can thiệp vào dữ liệu từ tầng OS trở lên của một EC2.
+- Về cơ bản tất cả các EC2 Instance đều hoạt động như một máy chủ độc lập và không thể access nếu như không có quyền.
+- Tất cả trách nhiệm từ phía OS đều do người dùng quản lí, AWS không chịu trách nhiệm về bảo mật hay bảo toàn dữ liệu.
+
+![image](images/Screenshot%20from%202024-08-15%2020-30-25.png)
+
+### Một số khái niệm cơ bản của EC2
+
+- **AMI**: Amazon Machine Image. Giống như một file ISO/Ghost chứa toàn bộ thông tin của hệ điều hành. EC2 được khởi động lên từ 1 AMI tương tự như việc cài win lần đầu cho PC/Laptop.
+- **EBS Volume**: Ổ cứng ảo hóa được cấp phát dữ liệu bởi Amazon. Chỉ có thể đọc được dữ liệu khi được gắn vào một instance.
+- **Snapshot**: Ảnh chụp của một **EBS Volume** tại 1 thời điểm. Có thể sử dụng để phục hồi dữ liệu khi có sự cố.
+- **Instance**: 1 Máy chủ ảo được cấp phát tài nguyên, CPU, RAM, GPU, ... tùy theo dòng instance mà sẽ có một số giới hạn nhất định.
+
+### Security Group là gì
+
+Để giới hạn truy cập tới EC2 và từ EC2 đi ra ngoài, AWS cung cấp một khái niệm gọi là Security Group (_Đây là kiến thức thuộc về **Networking** nhưng cần thiết đề cập đến tại đây_)
+
+![alt text](images/Screenshot%20from%202024-08-15%2020-47-15.png)
+
+**Chú ý**:
+
+- Rule của một security group là stateful, một request đến sẽ tự nhận được response mà không phải định nghĩa 1 cách tường minh cho phép đi ra.
+- Default nếu như không có yêu cầu gì đặc biệt thì outbound rule sẽ mặc định là mở cho all.
+- Rule của security group chỉ có Allow, không có Deny.
+- Một EC2 có thể gắn nhiều hơn một security group.
