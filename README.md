@@ -132,3 +132,17 @@ Khi đối chiếu một số khái niệm giữa EC2 với PC/Laptop truyền t
 - Default nếu như không có yêu cầu gì đặc biệt thì outbound rule sẽ mặc định là mở cho all.
 - Rule của security group chỉ có Allow, không có Deny.
 - Một EC2 có thể gắn nhiều hơn một security group.
+
+### User-data và Meta-data
+
+EC2 cung cấp cơ chế cho phép chạy script tại thời điểm launch gọi là **user data**
+Có thể sử dụng user data để thực thi một số hành động
+
+- Install software.
+- Download source code/artifact.
+- Customize settings.
+  Lưu ý là không nên để các thông tin nhạy cảm như DB username/password vào trong user data.
+
+Mỗi EC2 có một bộ thông tin được nạp lên sau khi khởi động gọi là **meta data**.
+Thông tin bao gồm địa chỉ IP public/private, security group, AMI-ID, Role,... phục vụ truy xuất khi cần thiết.
+Metada được lưu tại địa chỉ: http://169.254.169.254/latest/meta-data (cố định cho cả Windows và Linux)
