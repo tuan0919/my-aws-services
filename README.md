@@ -44,3 +44,44 @@ Về cơ bản, AWS được xem như là một IaaS, tuy nhiên một số dị
 | Linh hoạt trong cấu hình | Thay đổi cấu hình tài nguyên một cách dễ dàng và nhanh chóng.              | Cần có sự can thiệp của bên provider, có thể cần thay đổi hợp đồng.                         |
 | Khả năng scale           | Dễ dàng tăng/giảm số lượng tài nguyên khi cần để đáp ứng nhu cầu workload  | Gần như không thể tăng/giảm tài nguyên một cách tùy ý.                                      |
 | Số lượng dịch vụ         | Đa dạng nhiều dịch vụ.                                                     | Cung cấp các dịch vụ cơ bản như Virtual server, Database, Storage,                          |
+
+## 2. Global infrastructure của AWS, giới thiệu các services chính
+
+### Region là gì?
+
+#### Khái niệm
+
+Region là một khái niệm để mô tả một khu vực vật lý trên thế giới àm AWS cung cấp các dịch vụ điện toán đám mây. Mỗi AWS Region là một khu vực độc lập với cơ sở hạ tầng và các dịch vụ.
+
+Mỗi Region sẽ bao gồm nhiều Availability Zone (AZ).
+
+#### Lựa chọn Region
+
+Việc lựa chọn region để triển khai hệ thống dựa trên:
+
+- Tuân thủ theo compliance (tiêu chuẩn ngành, luật pháp v.v)
+- Gần người dùng (giảm độ trễ).
+- Dịch vụ cần sử dụng có ở region đó hay không?
+- Giá cả của các dịch vụ.
+
+### Availability Zone là gì?
+
+Một Availability Zone (AZ) là một trung tâm dữ liệu hoặc một nhóm các trung tâm dữ liệu nằm trong cùng một khu vực vật lý, nhưng được phân bổ và vận hành hoàn toàn độc lập. Mỗi AZ có thể có các tài nguyên đám mây như máy chủ ảo, ổ cứng, network, security, các dịch vụ khác nhau, cùng với các tài nguyên hỗ trợ khác như hệ thống cấp điện.
+
+Việc sử dụng nhiều AZ đảm bảo tính khả dụng cao cho ứng dụng, tăng tính bảo mật và đảm bảo dữ liệu được lưu trữ và xử lý an toàn. Nếu một AZ gặp sự cố hoặc ngừng hoạt động, các tài nguyên đám mây được triển khai tại các AZ khác vẫn có thể hoạt động bình thường, giúp đảm bảo rằng dịch vụ của chúng ta hoạt động một cách liên tục và đáng tin cậy.
+
+Mỗi region của AWS thường sẽ có ít nhất 3 AZs.
+VD: ở region Singapore(ap-southeast) sẽ có các zone:
+
+- ap-southeast-1a
+- ap-southeast-1b
+- ap-southeast-1c
+  > Giả sử nếu chúng ta triển khai theo dạng Cluster, chúng ta sẽ chọn nhiều zone thay vì một zone.
+
+Hầu hết các service của AWS đều hỗ trợ triển khai trên Mutli-AZ để đảm bảo nâng cao High Availability của hệ thống.
+
+### Edge Location là gì?
+
+AWS Edge Location là một mạng lưới các điểm phân phối (Point of Present) trên thế giới, nơi các dịch vụ AWS, như Amazon CloudFront và Amazon Route 53, cung cấp các tính năng xử lý và phân phối nội dung (CDN) đến người dùng cuối.
+
+Mỗi Edge Location là một trung tâm dữ liệu nhỏ và được quản lý bởi AWS, có khả năng đáp ứng các yêu cầu địa phương từ các máy khách của người dùng cuối. Edge Locations hoạt động như bộ đệm cho nội dung được phân phối bởi các dịch vụ AWS, giúp giảm thiểu độ trễ và tăng tốc độ truy cập cho người dùng cuối.
