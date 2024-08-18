@@ -203,4 +203,46 @@ EC2 là dịch vụ rất mạnh mẽ của AWS, xuất hiện trong hầu hết
     - Thiết lập, xác minh và điều chỉnh quy mô quyền đối với đặc quyền tối thiểu. 
     > (Nghĩa là với IAM, có thể thiết lập một set role cung cấp vừa đủ cho một thực thể để thực hiện một chức năng nào đó mà không cần cấp dư quyền.)
     </details>
+
+  - <details>
+    <summary>
+    <b>IAM Basic Concepts</b>
+    </summary>
+
+    Để có thể thiết kế & xây dựng hệ thống trên AWS đảm bảo tiêu chí về  Security cũng như không gặp trouble, chúng ta cần nắm vững các **concept cơ bản** (*các concepts dưới đây không phải tất cả*):
+    - User
+    - Group
+    - Role
+    - Permission (Policy)
+    </details>
+
+  - <details>
+    <summary>
+    <b>Policy</b>
+    </summary>
+
+    Quy định việc ai/cái gì có thể hoặc không thể làm gì.
+    
+    Một policy thường bao gồm nhiều `Statement` quy định `Allow/Deny` hành động trên một resource dựa trên condition nào đó.
+
+    Mỗi statement cần định nghĩa các thông tin:
+
+    - Effect: có hai loại là Allow & Deny. *Deny được ưu tiên hơn.
+    - Action: tập hợp các action cho phép thực thi.
+    - Resource: tập hợp các Resource cho phép tương tác.
+    - [Condition]: Điều kiện kèm theo để apply statement này.
+
+    Policy có thể gắn vào Role/Group/User.
+
+    Policy có hai loại là **Inline Policy** và **Managed Policy**:
+
+    - Inline Policy: được đính trực tiếp trên Role/Group/User và không thể tái sử dụng ở Role/Group/User khác.
+    - Managed Policy: Được tạo riêng và có thể gắn vào nhiều Role/Group/User.
+
+    Managed Policy lại được chia thành hai loại là AWS Managed và User Managed.
+
+    Việc lựa chọn giữa Inline vs Managed phải được tính toán dựa trên các yếu tố như: tính tái sử dụng, quản lý thay đổi tập trung, versioning & rollback.
+
+    ![img](images/Screenshot%20from%202024-08-18%2023-46-31.png)
+    </details>
   </details>
