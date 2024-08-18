@@ -158,3 +158,49 @@ EC2 là dịch vụ rất mạnh mẽ của AWS, xuất hiện trong hầu hết
 - Compute cluster: dùng cho các ứng dụng chạy xử lý data như Hadoop, Spark,...
 - Dùng làm database trong trường hợp không muốn xài dịch vụ database sẵn của AWS.
 - Dùng làm node của cluster K8S.
+
+### Elastic Block Storage (EBS)
+
+#### Đặc trưng
+
+- Là một cơ chế lưu trữ dạng block.
+- Đơn vị quản lí là các EBS Volume.
+- Chỉ có thể access data khi được gắn vào một EC2 instance (dùng làm ổ root, C: hoặc ổ data).
+- Một số loại EBS đặc biệt cho phép gắn vào nhiều hơn 1 EC2 Instance (Multi attach)
+- Có thể tăng size một cách dễ dàng ngay cả khi server đang chạy.
+
+#### Tính tiền
+
+- Dung lượng của volume ($/GB/Month), không xài hết cũng sẽ mất tiền 100% trên dung lượng vì đã cấp phát rồi.
+- IOPS: Tốc độ đọc ghi càng cao, càng phát sinh phí.
+- Dung lượng của các bản snapshot của ổ cứng ($/GB/Month) tuy nhiên giá rẻ hơn lưu trữ.
+
+#### Các loại thường dùng
+
+- **General purpose** (default) - gp2, gp3: Phù hợp cho hầu hết các mục đích sử dụng.
+- **IOPS Provisioned** - io1, io2: Phù hợp cho các ứng dụng đòi hỏi tốc độ đọc ghi cao.
+- **Throughput optimized HDD**: Dùng cho các hệ thống về Bigdata, Data warehouse, cần throughput cao.
+- **Cold HDD**: Lưu trữ giá rẻ cho các file ít khi được access (VD File server của công ty).
+- **Magnetic**: Thế hệ trước của HDD, ít được sử dụng.
+
+# Misc.
+
+- <details>
+  <summary>
+  <b>Identity and Access Management (IAM)</b>
+  </summary>
+
+  IAM dùng để định danh và phân quyền, quản lí ai (who) và cái gì (what) có thể được access như thế nào tới các resource trên AWS, quản lí một cách tập trung các quyền chi tiết, phân tích truy cập để tinh chỉnh quyền.
+
+  - <details>
+    <summary>
+    <b>Use case</b>
+    </summary>
+
+    - Áp dụng quyền chi tiết và mở rộng quy mô với khả năng kiểm soát truy cập dựa trên thuộc tính. Vd: phòng ban, job role, tên nhóm.
+    - Quản lý truy cập theo từng tài khoản hoặc mở rộng quy mô truy cập trên các tài khoản và ứng dụng AWS.
+    - Thiết lập quy tắc bảo vệ & phòng ngừa cho toàn tổ chức.
+    - Thiết lập, xác minh và điều chỉnh quy mô quyền đối với đặc quyền tối thiểu. 
+    > (Nghĩa là với IAM, có thể thiết lập một set role cung cấp vừa đủ cho một thực thể để thực hiện một chức năng nào đó mà không cần cấp dư quyền.)
+    </details>
+  </details>
