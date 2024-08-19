@@ -245,4 +245,51 @@ EC2 là dịch vụ rất mạnh mẽ của AWS, xuất hiện trong hầu hết
 
     ![img](images/Screenshot%20from%202024-08-18%2023-46-31.png)
     </details>
+
+  - <details>
+    <summary>
+    <b>User</b>
+    </summary>
+
+    Đại diện cho 1 profile của một người dùng trên AWS account.
+
+    User có thể login vào AWS Console sử dụng username/password.
+
+    User có thể phát hành access-key/secret-key để sử dụng cho CLI hoặc test SDK trong quá trình test code. Cặp access/secret key này cũng sẽ đại diện cho user (thay vì dùng username/password).
+    </details>
+
+  - <details>
+    <summary>
+    <b>Role</b>
+    </summary>
+
+    Đại diện cho 1 quyền trên AWS. Không giống như khái niệm Role của 1 user như trong phân quyền hệ thống, cần lưu ý để tránh nhầm lẫn.
+
+    Sử dụng khi muốn cấp quyền cho một thực thể có thể tương tác với các resources khác trên AWS. Thường dùng để gắn vào EC2, Lambda, Container,...
+
+    Có thể sử dụng để cấp quyền cho 1 user nằm ở AWS account khác mà không muốn tạo ra user profile cho họ trên account AWS của mình. Bằng cách cho phép 1 user assume-role tới 1 role trên account, user có thể có các quyền tạm thời để thực hiện một thao tác.
+
+    * Lưu ý: một resource trên AWS không thể tương tác với resource khác nếu không được gán Role với các quyền thích hợp. Đây cũng chính là lí do khiến cho Role & Permission khiến cho nhiều người tốn thời gian trouble shooting nếu không nắm rõ dịch vụ mà mình sử dụng.
+    </details>
+
+  - <details>
+    <summary>
+    <b>Group</b>
+    </summary>
+
+    Đại diện cho 1 nhóm user trên hệ thống.
+
+    Sử dụng khi muốn phân chia quyền dựa theo vai trò trong dự án, phòng ban,...
+
+    Nên thiết kế các nhóm user và phân quyền hợp lý, sau đó khi có người mới chúng ta chỉ cần add user đó vào các nhóm cần thiết giúp tiết kiệm thời gian và tránh sai sót (cấp dư hoặc thiếu quyền).
+
+    Lưu ý tránh bị chồng chéo quyền (vd 1 group allow action A nhưng group khác lại deny action A).
+
+    Một group không thể chứa group khác (lồng nhau).
+
+    Một user có thể không thuộc group nào hoặc thuộc nhiều groups.
+
+    Một group có thể không có user nào hoặc có nhiều users.
+    
+    </details>
   </details>
