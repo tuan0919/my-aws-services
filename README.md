@@ -290,6 +290,23 @@ EC2 là dịch vụ rất mạnh mẽ của AWS, xuất hiện trong hầu hết
     Một user có thể không thuộc group nào hoặc thuộc nhiều groups.
 
     Một group có thể không có user nào hoặc có nhiều users.
+
+    </details>
+
+  - <details>
+    <summary>
+    <b>IAM Policy vs Resource Policy</b>
+    </summary>
     
+    Một số resource như s3, SQS, KMS hỗ trợ định nghĩa Policy ở cấp độ resource.
+
+    Về cơ bản cấu trúc resource-policy tương tự IAM policy nhưng được gán cho một resource cụ thể.
+
+    Quyền của một user (group/role) đối với resource sẽ là kết hợp của IAM Policy & Resource Policy sau khi đã loại trừ Deny.
+
+    Một số resource cần security cao thường sẽ được ưu tiên setting resource policy.
+
+    Lưu ý: IAM Policy nói chung không có tác dụng đối với account root.
+    => Nếu lỡ tay setting deny all không thao tác được trên một resource, có thể login = account root để troubleshooting.
     </details>
   </details>
