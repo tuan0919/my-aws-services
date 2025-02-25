@@ -46,10 +46,15 @@
 #### 1) Khái niệm
 EC2 Hibernate là một trạng thái (state) cho phép dừng một instance mà không mất dữ liệu trong RAM, giúp khởi động lại nhanh chóng mà không cần khởi động lại từ đầu. Nó hoạt động tương tự như Hibernate mode trên máy tính cá nhân.
 #### 2) Cách hoạt động
+
 1️⃣ Khi Hibernate được kích hoạt, AWS lưu trạng thái RAM vào ổ đĩa gốc (root volume) EBS.
+
 2️⃣ EC2 instance được đưa vào trạng thái "Stopped" nhưng dữ liệu RAM vẫn được giữ lại.
+
 3️⃣ Khi bật lại, AWS khôi phục dữ liệu RAM từ EBS và tiếp tục từ trạng thái trước đó.
+
 📌 Khác với "Stop" bình thường, khi dùng Hibernate, instance không bị mất dữ liệu RAM.
+
 #### 3) Nhu cầu sử dụng
 -  Ứng dụng có quá trình khởi động dài (VD: tải nhiều dữ liệu vào RAM).
 - Machine Learning / Big Data Processing, cần giữ dữ liệu RAM giữa các lần chạy.
