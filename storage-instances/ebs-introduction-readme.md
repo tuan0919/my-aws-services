@@ -84,3 +84,9 @@ ESB được định danh bởi Size, Throughput, IOPS (I/O Ops Per Sec)
 
 - st1: Big Data, log processing, streaming.
 - sc1: Archive, backup.
+
+### EBS Multi-Attach - io1/io2
+
+- Attach cùng một EBS cho nhiều EC2 instance ở cùng một AZ.
+- Mỗi instance có toàn quyền read & write.
+- Chỉ hỗ trợ **tối đa 16 instance** được sử dụng cùng một EBS.
