@@ -13,3 +13,10 @@
 - Application Load Balancer - ALB
 
 ![img](../images/Screenshot%202025-02-27%20200009.png)
+
+## Gateway Load Balancer - GWLB
+
+- Bảo vệ hệ thống mạng bằng các giải pháp tường lửa (Firewall) hoặc IDS/IPS.
+- Kiểm tra và lọc lưu lượng mạng trước khi chuyển đến dịch vụ backend.
+- Tích hợp các thiết bị bảo mật của bên thứ ba.
+- Deep Packet Inspection (DPI) hoặc phân tích lưu lượng mạng.

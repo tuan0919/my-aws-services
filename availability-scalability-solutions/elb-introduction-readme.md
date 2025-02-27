@@ -67,3 +67,11 @@ Khi đó, Security Group Rule của một EC2 nên được thiết lập như s
 
 - EC2 chỉ cho phép traffic đến từ Load Balancer.
 - Source của rule là security group của Load Balancer, nghĩa là đang link security group của Load Balancer với security group của EC2.
+
+## So sánh nhanh các loại Load Balancer trong AWS
+|Loại|Layer|Giao thức|Use case|Inspection|
+|----|-----|--------|---|---|
+|ALB|Layer 7|HTTP, HTTPS|Web apps, API Gateway| Không|
+|NLB|Layer 4|TCP, UDP|Game online, Video Streaming| Không|
+|GWLB|Layer 3|IP, TCP/UDP|Firewall, IDS/IPS, Security| Có|
+|CLB|Layer 4/7|HTTP, TCP|Legacy Apps| Không|
