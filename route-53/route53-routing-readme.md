@@ -49,3 +49,31 @@ Khác với Lantency-based, loại Routing này hoạt động dựa trên vị 
 TH Sử dụng: nội địa hóa cho chương trình, giới hạn phân phối nội dung, cân bằng tải, ...
 
 Có thể kết hợp với Health Check.
+
+## Geoproximity Routing
+
+Giúp điều hướng traffic đến tài nguyên gần nhất dựa trên vị trí địa lý của user. 
+
+Route 53 sử dụng địa lý của user để quyết định hướng traffic đến endpoint gần nhất. Có thể điều chỉnh bias để tăng/giảm vùng phủ của từng endpoint.
+
+- Để mở rộng vùng phủ (1 đến 99) - thêm traffic đến tài nguyên.
+- Để thu nhỏ vùng phủ (-1 đến -99) - giảm traffic đến tài nguyên.
+
+Khác với Geolocation Routing, Geoproximity không cố định theo quốc gia mà linh hoạt theo khoảng cách. Về cơ bản là cho phép chúng ta điều chỉnh lại vùng phủ của một region lên một resource.
+
+Tài nguyên đích có thể là:
+- AWS Resources.
+- Non-AWS Resources.
+
+Cần phải sử dụng Route 53 Traffic Flow (nâng cao) để có thể sử dụng tính năng này.
+
+## IP-based Routing
+
+Route dựa trên địa chỉ IP của client. Chúng ta sẽ cung cấp một danh sách CIDRs và location/resource tương ứng (user-IP-to-endpoint mappings).
+
+## Multi-Value Routing
+
+Cho phép routing traffic đến nhiều resource khác nhau.
+
+Có thể kết Health Check để đảm bảo kết quả trả về là một danh sách các resource đang hoạt động bình thường.
+
