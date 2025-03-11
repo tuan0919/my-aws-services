@@ -1,4 +1,4 @@
-## Amazon S3 Introduction
+## Amazon S3 - Introduction
 ### Bucket
 S3 cho phép người dùng lưu trữ file (object) trong các "bucket". Tên của bucket phải là độc nhất trên phạm vi toàn cầu (trên toàn bộ các region), nhưng phạm vi hoạt động của một bucket thì chỉ là trong một region.
 ### Object
@@ -17,7 +17,7 @@ Ngoài ra một Object còn có các thông tin như:
 - Tags. 
 - Version ID (nếu versioning được bật).
 
-## Amazon S3 Security
+## Amazon S3 - Security
 Có vài cách để thiết lập bảo mật cho một Amazon S3:
 - **User-based**:
   - **IAM Policies** - Cho phép chỉ định một user cụ thể được phép dùng một API call nào đó bằng IAM.
@@ -58,3 +58,30 @@ Chúng ta sử dụng Bucket policy khi:
 - Cấp public access đến bucket.
 - Bắt buộc object cần phải bị mã hóa khi upload.
 - Cấp access cho một account khác.
+
+## Amazon S3 - Static Website Hosting
+Ngoài việc lưu trữ dữ liệu, S3 còn có thể host các website tĩnh và cho phép chúng ta truy cập chúng trên internet.
+
+## Amazon S3 - Versioning
+Chúng ta có thể tạo các phiên bản khác nhau cho các file bên trong S3 bằng cách bật tính năng Versioning.
+- Versioning cần phải được bật tại **bucket level**.
+- Với Versioning, khi upload một file mới có cùng key, sẽ thay đổi 'version' của file đó.
+- Khuyến khích nên bật versioning bởi vì:
+  - Bảo vệ file khỏi một số tình huống vô tình xóa. (có thể khôi phục lại với versioning)
+  - Dễ dàng rollback một file về version trước đó.
+
+## Amazon S3 - Replication (CRR & SRR)
+S3 Bucket có thể có các Replica khác nhau, để làm được điều này:
+- Bucket gốc và Bucket Replica đều phải bật tính năng versioning.
+- Có hai loại replica: Cross-Region Replication (CRR) và Same-Region Replication (SRR).
+- Bucket có thể thuộc về hai AWS account khác nhau.
+- Quá trình sao chép dữ liệu là bất đồng bộ.
+- Khi bật tính năng Replication, thì chỉ có object mới được upload mới được replica.
+- Về quá trình DELETE:
+  - **Có thể replica delete markers** từ bucket nguồn đến bucket replica (thiết lập tùy chọn).
+  - Thao tác xóa bằng Version ID sẽ không được replica.
+- Quá trình replication không thể thực hiện dưới dạng chuỗi:
+  - Nếu bucket 1 có replica là bucket 2, bucket 2 có replica là bucket 3.
+  - Khi bucket 1 upload file mới, bucket 2 sẽ được replica file mới đó, **nhưng bucket 3 sẽ thì không**.
+
+  
