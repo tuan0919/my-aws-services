@@ -17,3 +17,27 @@ Thông thường thì bucket owner phải chịu chi phí cho việc lưu trữ 
 Với **Requester Pays** bucket, người request sẽ là bên chịu chi phí data transfer khi truy cập đến một tài nguyên trên bucket. Hữu ích trong trường hợp muốn chia sẻ dataset lớn với một tài khoản khác.
 
 Requester cần phải là một tài khoản AWS được xác minh rõ ràng để có thể là bên chịu phí.
+
+## Amazon S3 - Event Notifications
+Một event S3 sẽ được tạo ra khi có một thao tác nào đó xảy ra, chẳng hạn: `S3:ObjectCreated`, `S3:ObjectRemoved`, `S3:ObjectRestore`, ... Các event này có thể được truyền tới các service như **AWS SNS**, **AWS SQS** hoặc **AWS Lambda**.
+
+Trường hợp sử dụng: tự động tạo thumbnail cho ảnh hoặc video được upload lên S3.
+
+Không giới hạn số lượng event tạo ra trong S3, các event này thường sẽ được phân phối trong vài giây, nhưng cũng có một vài trường hợp tốn đến vài phút.
+
+### IAM Permission
+
+Để S3 có thể phân phối các event đến các service khác thì cần một số thiết lập về quyền dành cho S3, cụ thể:
+- SNS: Cần thiết lập policy cho phép S3 có quyền `SNS:Publish` để publish event message vào SNS.
+- SQS: Cần thiết lập policy cho phép S3 có quyền `SQS:SendMessage` để publish event message vào SQS.
+- Lambda Function: Cần thiết lập policy cho phép S3 có quyền `lambda:InvokeFunction` để có thể gọi đến function cần thiết khi có event xảy ra.
+
+![img](../images/Screenshot%202025-03-14%20235742.png)
+
+### EventBridge
+
+Ngoài việc để S3 phân phối event trực tiếp đến các service đã liệt kê phía trên, thì còn cách tiếp cận khác là tất cả các event của S3 sẽ được phân phối đến **EventBridge**.
+
+Tại EventBridge, chúng ta sẽ thiết lập một số rule và nhờ các rule này mà các event sẽ được phân phối đến các AWS Service khác.
+
+![img](../images/Screenshot%202025-03-15%20000805.png)
