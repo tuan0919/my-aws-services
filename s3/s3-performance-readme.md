@@ -14,3 +14,12 @@
 ## Tăng hiệu suất khi đọc
 - **S3 Byte-Range Fetches**:
   - Về cơ bản cũng giống Multi-part upload, đọc file theo từng range byte nhỏ hơn nhưng thực hiện song song.
+
+## S3 Select & Glacier Select
+Đôi khi chúng ta cần fetch một file trên S3 về, sau đó lại thực hiện truy vấn trên file đấy để filter ra các dataset mình cần sử dụng. Cách tiếp cận này tạo ra sự lãng phí data transfer vì chúng ta chỉ cần một phần dữ liệu trong file đó.
+
+**S3 Select** có thể được sử dụng để truy vấn dữ liệu ngay trên file, sau đó trả kết quả truy vấn về. Cách tiếp cận này sẽ tối ưu hơn rất nhiều nếu như giả sử chúng ta chỉ cần 100 row trong một file CSV có hàng ngàn record.
+
+Bên cạnh S3 Select, AWS cũng hỗ trợ Glacier Select, cho phép ta truy vấn record trong các file đang nằm ở Glacier class.
+
+![img](../images/Screenshot%202025-03-15%20122924.png)
