@@ -1,4 +1,6 @@
-## Amazon S3 Security - Encryption object
+# Amazon S3 Security
+
+## I) Encryption object
 Trong S3, chúng ta có thể bảo mật object bên trong Bucket bằng cách mã hóa chúng, có thể sử dụng 1 các cách sau:
 
 Server-Side Encryption (SSE):
@@ -51,7 +53,7 @@ Server-Side Encryption (SSE):
 
 ![img](../images/Screenshot%202025-03-16%20145222.png)
 
-## Amazon S3 Security - Encryption in Transit
+## II) Encryption in Transit
 - Mã hóa trong quá trình truyền tải còn được gọi là SSL/TLS.
 - Amazon S3 cung cấp hai endpoint:
   - HTTP endpoint - không mã hóa
@@ -82,4 +84,125 @@ Server-Side Encryption (SSE):
     }
   ```
 
+## III) CORS
 
+### CORS là gì?
+
+- **CORS (Cross-Origin Resource Sharing)** là một cơ chế bảo mật của trình duyệt web.
+- Nó kiểm soát việc một website có thể gửi request đến một server ở một **origin** khác hay không.
+- **Origin** là tổ hợp của:
+  - **Scheme (protocol)**: HTTP, HTTPS.
+  - **Host (domain)**: example.com, api.example.com.
+  - **Port**: 80 (HTTP), 443 (HTTPS), hoặc các port tùy chỉnh khác.
+
+### Cách hoạt động của CORS
+
+- Khi một trang web gửi request đến một server **khác origin**, trình duyệt sẽ kiểm tra **CORS policy**.
+- Nếu server **cho phép** request từ origin đó, nó sẽ phản hồi với **CORS headers**, ví dụ:
+  ```
+  Access-Control-Allow-Origin: https://example.com
+  ```
+- Nếu không có header này hoặc giá trị không khớp, trình duyệt sẽ **chặn request**.
+
+#### Ví dụ về cùng origin & khác origin
+
+- **Cùng origin:**
+  - `http://example.com/app1`
+  - `http://example.com/app2`
+- **Khác origin:**
+  - `http://www.example.com` (khác `example.com` do có `www`)
+  - `http://other.example.com` (khác do subdomain khác nhau)
+
+### CORS trong Amazon S3
+
+- Khi sử dụng **Amazon S3** để lưu trữ tài nguyên tĩnh (ảnh, video, JSON...), bạn có thể cần **bật CORS** nếu dữ liệu được truy cập từ các website khác.
+- Ví dụ, nếu một trang web **https://mywebsite.com** muốn tải ảnh từ **S3 bucket**, thì S3 cần có **CORS policy** cho phép domain đó.
+- Một policy mẫu cho phép mọi nguồn truy cập:
+  ```xml
+  <CORSConfiguration>
+    <CORSRule>
+      <AllowedOrigin>*</AllowedOrigin>
+      <AllowedMethod>GET</AllowedMethod>
+      <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+  </CORSConfiguration>
+  ```
+  - `AllowedOrigin`: Cho phép tất cả origin (`*`).
+  - `AllowedMethod`: Chỉ cho phép phương thức **GET**.
+  - `AllowedHeader`: Chấp nhận tất cả header trong request.
+
+> ⚠ **Lưu ý:** Không nên dùng `*` cho **production** nếu không cần thiết, thay vào đó hãy chỉ định domain cụ thể để bảo mật.
+
+## IV) MFA Delete
+MFA (Multi-factor Authentication) - yêu cầu người dùng phải generate một đoạn mã trên thiết bị khác (thường là điện thoại hoặc phần cứng chuyên biệt nào đó) trước khi thực hiện một thao tác quan trọng nào đó trên S3.
+
+MFA sẽ cần thiết khi:
+- Xóa vĩnh viễn một object version nào đó.
+- Tạm dừng Versioning trên một bucket.
+
+MFA sẽ không cần thiết khi:
+- Bật Versioning.
+- Liệt kê các object version bị xóa.
+
+Để có thể sử dụng MFA Delete, Versioning phải được bật trên bucket.
+
+Chỉ có chủ bucket (root) mới có thể bật/tắt tính năng MFA Delete.
+
+## V) Access Logs
+- Để phục vụ cho việc kiểm kê, chúng ta có thể sẽ muốn log lại toàn bộ truy cập đến S3 bucket.
+- Bất kì request nào đến S3, từ bất kì account nào, được cho phép hay từ chối đều sẽ được log tại một S3 bucket khác.
+- Các dữ liệu này có thể được sử dụng để phân tích, kiểm kê, ... bằng các tool phân tích dữ liệu khác nhau.
+- Bucket logging phải ở cùng region với bucket nguồn.
+
+## VI) Pre-Signed URLs
+- Các Pre-signed URLs có thể được tạo ra với S3 Console, AWS CLI hoặc SDK.
+- Thời hạn sử dụng URL:
+  - S3 Console - 12 giờ.
+  - AWS CLI - 168 giờ.
+- Với Pre-signed URLs, một user có thể được kế thừa quyền của user khác đã tạo pre-signed URL đó.
+
+## VII) S3 Glacier Vault Lock & Object Lock
+### Glacier Vault Lock
+- Khi muốn thực thi mô hình WORM (Write Once Read Many).
+- Tạo ra một Vault Lock Policy.
+- Khóa Policy này lại và ngăn bất kì hành động chỉnh sửa hay xóa đối với policy này.
+### Object Lock
+- Versioning bắt buộc phải được bật.
+- Cũng dùng để thực thi mô hình WORM.
+- Chặn hành vi xóa một object version nào đó trong một khoảng thời gian nhất định.
+- Có hai dạng retention mode: Compliance và Governance.
+#### Compliance
+- Object version không thể bị ghi đè hay xóa bởi bất kì ai, kể cả root.
+- Retention mode của object không thể bị thay đổi, không thể bị rút ngắn.
+#### Governance
+- Đa số người dùng sẽ không có quyền ghi đè hay xóa một object version cũng như không thể thay đổi lock settings của nó.
+- Một vài user có quyền đặc biệt sẽ có thể thay đổi retention mode hay thậm chí là xóa object.
+
+Bất kể là ở mode nào, đều phải thiết lập **Rention Period** - khoảng thời gian mà object được bảo vệ, có thể được mở rộng ra.
+
+#### Legal Hold
+- Dạng lock đặc biệt, bảo vệ object một cách riêng biệt, không chịu ảnh hưởng của Rentention Mode.
+- Có thể tự do đặt và xóa trên một object nếu có quyền IAM `s3:PutObjectLegalHold`.
+
+## VIII) S3 Access Point
+- Access Point giúp đơn giản hóa quá trình bảo mật cho S3 Bucket.
+- Mỗi Access Point sẽ có:
+  - DNS name riêng biệt (Internet Origin hoặc VPC Origin).
+  - Một Access Point Policy (Tương tự như bucket policy) - quản lý bảo mật ở phạm vi nhất định.
+
+![img](../images/Screenshot%202025-03-16%20164405.png)
+
+### Access Point - VPC Origin
+- Chúng ta có thể khai báo cho một Access Point chỉ có thể được phép truy cập thông qua VPC.
+- Cần phải tạo một **VPC Endpoint** để truy cập đến **Access Point** (Gateway hoặc Internet endpoint).
+- VPC Endpoint cần phải có Policy cho phép truy cập đến Access Endpoint đích.
+
+![img](../images/Screenshot%202025-03-16%20164832.png)
+
+## IX) S3 Object Lambda
+- Sử dụng AWS Lambda Function để thay đổi object trước khi gửi đến chương trình người gọi.
+- Chỉ cần dùng một S3 Bucket, nhưng thay vào đó cần sử dụng thêm **S3 Access Point** và **S3 Object Lambda Access Point**.
+- Use case:
+  - Thay đổi data format, chẳng hạn thay đổi từ định dạng XML sang JSON.
+  - Thay đổi kích thước tài nguyên trước khi gửi đến client.
+  - Đính kèm watermark bản quyền lên object.
