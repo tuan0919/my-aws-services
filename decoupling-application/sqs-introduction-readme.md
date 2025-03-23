@@ -47,3 +47,14 @@ Trong trường hợp có nhiều consumer đồng thời cùng poll SQS:
 **SQS Access Policy** (tương tự như S3 Bucket Policy):
 - Hữu ích khi muốn quản lý truy cập SQS trên nhiều tài khoản.
 - Cho phép các service khác (SNS, S3, ...) được phép ghi vào SQS.
+
+### Message Visibility Timeout
+- Khi message được poll bởi một consumer, nó sẽ vô hình đối với các consumer khác.
+- Mặc định thì message thời gian để message xuất hiện trở lại là 30 giây. Nghĩa là, mỗi message có 30 giây để xử lý.
+- Nếu một message đã được nhận bởi consumer mà không xử lý trong 30 giây, thì message đó sẽ có thể được consumer khác poll về và xử lý.
+- Đồng nghĩa, nếu một message không được xử lý kịp trong thời gian nó khả dụng, thì nó có thể bị xử lý nhiều lần bởi các consumer khác nhau.
+- Trong trường hợp consumer xử lý message và biết rõ rằng thời gian để xử lý message này sẽ vượt quá thời gian vô hình của nó, thì có thể dùng API `ChangeMessageVisibility` để tăng thêm thời gian.
+- Nếu thời gian vô hình của message cao (vài giờ), và consumer lại bị crash giữa chừng, thì quá trình tái xử lý sẽ mất nhiều thời gian.
+- Ngược lại, nếu chúng ta để thời gian vô hình quá ngắn, message có thể bị xử lý nhiều lần.
+
+![img](../images/Screenshot%202025-03-23%20161227.png)
