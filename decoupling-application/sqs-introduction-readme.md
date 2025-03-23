@@ -58,3 +58,16 @@ Trong trường hợp có nhiều consumer đồng thời cùng poll SQS:
 - Ngược lại, nếu chúng ta để thời gian vô hình quá ngắn, message có thể bị xử lý nhiều lần.
 
 ![img](../images/Screenshot%202025-03-23%20161227.png)
+
+### Long Polling
+- Khi yêu cầu một message trong queue, consumer có thể đợi message xuất hiện nếu như không thấy nó, quá trình này gọi là Long polling.
+- Long Polling sẽ giảm số lần gọi API đến SQS trong khi tăng hiệu suất và độ trễ của ứng dụng.
+- Thời gian chờ có thể từ 1 - 20 giây.
+- Long Polling được khuyến khích sử dụng hơn Short Polling.
+- Long Polling có thể được bật tại queue hoặc sử dụng thông qua API `WaitTimeSeconds`.
+
+## FIFO Queue
+Là một dạng queue khác của SQS, giảm bảo thứ tự của message vào và ra của queue (First-In-First-Out).
+- Bị giới hạn throughput: 300 msg/s nếu không sử dụng batch, 3000 msg/s nếu có.
+- Khả năng gửi message một lần duy nhất (bằng cách xóa đi những message duplicate).
+- Message được xử lý theo thứ tự bởi Consumer.
