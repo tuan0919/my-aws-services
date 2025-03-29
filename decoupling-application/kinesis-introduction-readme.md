@@ -8,33 +8,9 @@
 ## Kinesis Data Streams
 Là dịch vụ cho phép chúng ta stream big data đến hệ thống. 
 
-### Shard
-
-Stream data được cấu thành nên từ các Shard. Dữ liệu sẽ được chia nhỏ ra và trải dài trên các Shard này. Shard cũng sẽ là căn cứ để quyết định mức độ tiêu thụ của hệ thống.
-
-### Producer
- 
-Producer sẽ nguồn gửi dữ liệu đến **Kinesis Data Stream**, có thể là chương trình, client, SDK, ... tất cả các producer sẽ cung cấp các bản ghi cho Kinesis Data Stream. Bản ghi về cơ bản được cấu thành bởi hai thành phần:
-
-- Partition Key: giúp xác định bản ghi sẽ được gửi đến Shard nào.
-- Data Blob (tối đa 1MB): là dữ liệu.
-
-Producer có thể gửi 1MB/giây hoặc 1000 msg/giây cho mỗi Shard.
-
-Khi dữ liệu đang nằm trong Kinesis Data Stream thì chúng có thể được tiêu thụ bởi nhiều consumer khác nhau, các consumer này có thể là các SDK, Lambda, Kinesis Data Firehose hoặc Kinesis Data Analytics.
-
-Khi consumer nhận được bản ghi, bản shi sẽ chứa các thôn ghi như:
-- Partition Key.
-- Sequence no, cho biết bản ghi này nằm ở đâu trong shard.
-- Data Blob.
-
-Có vài chế độ consume cho Kinesis Data Stream:
-- 2MB/s mỗi shard và chia sẻ throughput với các consumer khác.
-- 2MB/s (enhanced) mỗi shard cho mỗi consumer.
-
 ![img](../images/Screenshot%202025-03-29%20233537.png)
 
-### Tóm tắt các điểm chính của Kinesis Data Stream
+### Summary
 
 - Retention trong khoảng 1 ~ 365 ngày.
 - Có khả năng tái xử lý dữ liệu.
@@ -69,3 +45,29 @@ Chúng ta trả tiền cho mỗi stream theo mỗi giờ và dữ liệu vào / 
 - Mã hóa at rest sử dụng KMS.
 - VPC endpoint cũng có sẵn cho Kinesis để cho phép nó được truy cập bên trong một VPC.
 - Tất cả các API call có thể được theo dõi qua CloudTrail.
+
+## Kinesis Data Firehose
+
+Dùng để phân phối stream data nhận vào đến một đích lưu trữ nào đó.
+
+### Summary
+
+- Dịch vụ được quản lý hoàn toàn, không cần quản trị, tự động mở rộng, serverless.
+  - AWS: Redshift / Amazon S3 / OpenSearch.
+  - Dịch vụ bên thứ ba: Splunk / MongoDB / DataDog / NewRelic / ...
+  - Tự thiết lập: HTTP endpoint nào đó.
+- Trả tiền cho lượng dữ liệu được truyền tải qua Firehose.
+- Gần như ngay lập tức.
+- Hỗ trợ nhiều data format, conversion, transformation, compression.
+- Hỗ trợ cho phép tự custom một tác vụ transform data bằng AWS Lambda.
+- Có thể gửi các dữ liệu thất bại hoặc tất cả dữ liệu đến S3 Bucket.
+
+### Kinesis Data Stream vs. Kinesis Data Firehose
+|Kinesis Data Stream|Kinesis Data Firehose|
+|-------------------|---------------------|
+|Là dịch vụ streaming dữ liệu để tiêu thụ|Là dịch vụ load dữ liệu stream vào một đích đến nào đó|
+|Tự viết mã (cho producer / consumer)|Được quản lý sẵn|
+|Thời gian thực|Gần thời gian thực|
+|Tự kiểm soát scale|Tự động scale|
+|Lưu trữ dữ liệu từ 1 - 365 ngày|Không lưu trữ dữ liệu|
+|Hỗ trợ khả năng replay|Không hỗ trợ replay|
