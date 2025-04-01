@@ -71,3 +71,19 @@ Dùng để phân phối stream data nhận vào đến một đích lưu trữ 
 |Tự kiểm soát scale|Tự động scale|
 |Lưu trữ dữ liệu từ 1 - 365 ngày|Không lưu trữ dữ liệu|
 |Hỗ trợ khả năng replay|Không hỗ trợ replay|
+
+### Ordering Data
+#### Kinesis
+
+Trong Kinesis, dữ liệu được sắp xếp theo thứ tự bằng partion key, Kinesis sẽ hash key này và đảm bảo các dữ liệu có cùng key sẽ nằm cùng một shard.
+
+#### SQS
+
+Trong SQS Standard, dữ liệu mặc định không sắp xếp.
+
+Trong SQS FIFO, nếu không sử dụng Group ID, message sẽ được consume theo thứ tự mà chúng được gửi đi, **nhưng chỉ đối với một consumer**.
+
+Trong trường hợp chúng ta muốn tăng số lượng consumer, thì message cần phải được nhóm lại theo một Group ID nào đó và mỗi consumer sẽ chỉ consume đúng nhóm dữ liệu đó trong queue.
+
+Cơ chế này tương đối giống với Partition Key trong Kinesis.
+
