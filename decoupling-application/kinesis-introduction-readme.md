@@ -86,4 +86,3 @@ Trong SQS FIFO, nếu không sử dụng Group ID, message sẽ được consume
 Trong trường hợp chúng ta muốn tăng số lượng consumer, thì message cần phải được nhóm lại theo một Group ID nào đó và mỗi consumer sẽ chỉ consume đúng nhóm dữ liệu đó trong queue.
 
 Cơ chế này tương đối giống với Partition Key trong Kinesis.
-
