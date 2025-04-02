@@ -26,3 +26,18 @@
 - Sắp xếp message ở mức độ các shard.
 - Dữ liệu hết hạn sau 1 khoảng thời gian.
 - Có hai mode: provisioned và on-demand.
+
+### Amazon MQ
+
+Các dịch vụ như SQS, SNS là dịch vụ thuần đám mây, sử dụng giao thức độc quyền bởi AWS.
+
+Các ứng dụng truyền thống thì lại thường sử dụng các giao thức mở như MQTT, AMQP, STOMP, Openwire, WSS...
+
+Điều này sẽ khiến ứng dụng khá khó khăn để có thể tích hợp vào máy chủ đám mây, vì thế thay vì tái cấu trúc lại các hệ thống này để sử dụng SQS hay SNS, chúng ta có thể sử dụng Amazon MQ.
+
+Amazon MQ là một dịch vụ message broker được quản lý phục vụ cho hai công nghệ phổ biến: **RabbitMQ** và **ActiveMQ**.
+
+- Amazon MQ sẽ không scale thoải mái như SQS / SNS.
+- Amazon MQ chạy trên các máy chủ, cho nên có thể chạy đa vùng (Multi-AZ) với các cơ chế chuyển đổi dự phòng (failover).
+- Amazon MQ có cả hai tính năng: queue như SQS và topic như SNS.
+
