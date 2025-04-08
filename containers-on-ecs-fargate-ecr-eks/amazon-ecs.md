@@ -148,3 +148,10 @@ Cách hoạt động:
 
 ![alt text](image-5.png)
 
+# Amazon ECR
+
+Bên cạnh việc lưu trữ Docker Image trên các máy chủ Docker Registry khác, Amazon cũng cung cấp dịch vụ Registry cho phép chúng ta lưu trữ Docker Image là ECR - Elastic Container Registry.
+- Cung cấp tùy chọn **Private** / **Public** repository.
+- Hoàn toàn tương thích với ECS, có backend là Amazon S3.
+- Việc truy cập đc quản lý thông qua IAM.
+- Hỗ trợ các tính năng như versioning, image tags, image life cycle, ...
