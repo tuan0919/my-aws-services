@@ -44,3 +44,4 @@ Chú ý: Kubernetes không phụ thuộc vào nền tảng đám mây (có thể
     - Amazon EFS (Fargate chỉ dùng đc loại này).
     - Amazon FSx cho Lustre.
     - Amazon FSx cho NetApp ONTAP
+
